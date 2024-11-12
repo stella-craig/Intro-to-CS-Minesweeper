@@ -18,21 +18,18 @@ void selectDifficulty()
         case 1: // Easy
             size = 7;
             mineCount = (int)(size * size * 0.10);
-            // Test
             printf("You chose the easy difficulty.\n");
             break;
 
         case 2: // Medium
             size = 10;
             mineCount = (int)(size * size * 0.15);
-            // Test
-            printf("You chose the med difficulty.\n");
+            printf("You chose the medium difficulty.\n");
             break;
 
         case 3: // Hard
             size = 20;
             mineCount = (int)(size * size * 0.25);
-            // Test
             printf("You chose the hard difficulty.\n");
             break;
 
@@ -47,14 +44,25 @@ void selectDifficulty()
             mineCount = (int)(size * size * minePercentage);
             break;
 
-        default: // Wrong input :(
-
-        
+        default: // Defaults to Medium
+			printf("Invalid selection. Defaulting to Medium.\n");
+            size = 10;
+            mineCount = (int)(size * size * 0.15);
+            break;
     }
+	
+	Board board;
+	board.size = size;
+	board.mineCount = mineCount;
+	board.cells = createBoard(size);
 
-    return;
+    return board;
+	
+}
 
-
+Cell **createBoard(int size)
+{
+	// Implemented in November 12th Meeting
 }
 
 
