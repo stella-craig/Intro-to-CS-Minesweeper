@@ -46,6 +46,6 @@ bool playTurn(Board *board);      			//Handle player input and play one turn of 
 void playFirstTurn(Board *board);
 bool checkWin(Board *board);                       			//Check if the player has won by revealing all non-mine cells
 int calculateMineCount(int size, float minePercentage); 	//Calculate the number of mines based on board size and percentage
-//Board selectDifficulty();                          			//Allow player to select difficulty and initialize the board
+Board selectDifficulty();                          			//Allow player to select difficulty and initialize the board
 
 /******************************************************************************************************/

@@ -1,7 +1,7 @@
 #include "minesweeper.h"
 
 // Function to select difficulty level and set up the board size and number of mines
-void selectDifficulty()
+Board selectDifficulty()
 {
     int difficulty, size = 0, mineCount = 0;
 
@@ -277,10 +277,14 @@ void playFirstTurn(Board *board) {
     calculateNearbyMines(board);
     
     // reveal cells
+    revealCell(board, row, col);
     
-
+    return;
 }
 
+// returns bool
+// true means game continues
+// false means game over
 bool playTurn(Board *board)
 {
     int row, col;
@@ -317,29 +321,93 @@ bool playTurn(Board *board)
     }
 
     // Handle player's action
-
     // If they chose reveal...
+    if(action == 'r'){
+        // is it flagged?
+        // cannot reveal it
+        if(board -> cells[row][col].isFlagged) {
+            return true;
+        }
+
+        // is it a mine?
+        else if(board -> cells[row][col].isMine){
+            printf("Uh oh! You hit a mine! That's a game over!\n");
+            return false;
+        }
+
+        // reveal that cell
+        else{
+            revealCell(board, row, col);
+        }
+    }
 
     // If they chose flag...
+    else if(action == 'f'){
+        // is it already flagged?
+        // if yes, unflag it
+        if(board->cells[row][col].isFlagged){
+            board->cells[row][col].isFlagged = false;
+            return true;
+        }
+
+        // if no, flag it
+        else{
+            board-> cells[row][col].isFlagged = true;
+            return true;
+        }
+    }
 
     // continue game
+    return true;
 }
 
 // Check win function
-// bool checkWin(Board * board){
+bool checkWin(Board * board)
+{
+    int revealedCells = 0;
 
-// }
+    for(int i = 0; i < board -> size; i++)
+    {
+        for(int j = 0; j < board -> size; j++)
+        {
+            if(board -> cells[i][j].isRevealed && !board -> cells[i][j].isMine)
+            {
+                revealedCells++;
+            }
+        }
+    }
+
+    return (revealedCells == (board -> size) * (board -> size) - (board -> mineCount));
+}
 
 // Main function to start the game
 int main(void)
 {
-    selectDifficulty(); // Prompt user for difficulty and set up the board
+    
+    Board board = selectDifficulty(); // Prompt user for difficulty and set up the board
+    initializeBoard(&board);
+    bool gameOver = false;
+
 
     // first play
+    playFirstTurn(&board);
 
     // while loop of regualr plays until game over
+    while(!gameOver)
+    {
+        printBoard(&board);
+        gameOver = !playTurn(&board);
+
+        if(checkWin(&board))
+        {
+            printf("Congrats! You won!\n");
+            break;
+        }
+    }
+
     // inside loop check if there was a win
 
     // free board
+    freeBoard(board.cells, board.size);
     return 0;
 }
