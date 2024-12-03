@@ -42,7 +42,8 @@ void calculateNearbyMines(Board *board);           			//Calculate the number of 
 void printBoard(Board *board);                     			//Print the current state of the board to the console
 void revealCell(Board *board, int row, int col);   			//Reveal a specific cell
 void revealAdjacentCells(Board *board, int row, int col);   //Recursively reveal adjacent cells if there are no nearby mines
-bool playTurn(Board *board, bool *firstMove);      			//Handle player input and play one turn of the game
+bool playTurn(Board *board);      			//Handle player input and play one turn of the game
+void playFirstTurn(Board *board);
 bool checkWin(Board *board);                       			//Check if the player has won by revealing all non-mine cells
 int calculateMineCount(int size, float minePercentage); 	//Calculate the number of mines based on board size and percentage
 //Board selectDifficulty();                          			//Allow player to select difficulty and initialize the board

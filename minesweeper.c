@@ -212,9 +212,134 @@ void calculateNearbyMines(Board *board)
     }
 }
 
+void revealCell(Board *board, int row, int col)
+{
+    // Checks for revealed and flagged cells
+    if(board -> cells[row][col].isRevealed || board -> cells[row][col].isFlagged)
+    {
+        return;
+    }
+
+    board -> cells[row][col].isRevealed = true; //Marks cell as revealed
+
+    //If mine, return with no action (come back to)
+    if(board -> cells[row][col].isMine)
+    {
+        return;
+    }
+
+    if(board -> cells[row][col].nearbyMines == 0)
+    {
+        revealAdjacentCells(board, row, col);
+    }
+
+}
+
+void revealAdjacentCells(Board *board, int row, int col)
+{
+        int dx[] = {-1, -1, -1, 0, 1, 1, 1, 0}; // Row offsets for 8 neighbors
+        int dy[] = {-1, 0, 1, 1, 1, 0, -1, -1}; // Column offsets for 8 neighbors
+
+        for(int i = 0; i < 8; i++)
+        {
+            int newRow = row + dx[i];
+            int newCol = col + dy[i];
+
+            if (newRow >= 0 && newRow < board -> size && newCol >= 0 && newCol < board -> size && !board -> cells[newRow][newCol].isRevealed) 
+            {
+                revealCell(board, newRow, newCol);
+            }
+        }       
+}
+
+void playFirstTurn(Board *board) {
+    int row, col;
+    char action;
+    bool data1 = true;
+
+    // ask for col and row until valid
+    while(data1){
+        printf("Enter row and column (row col): ");
+        scanf("%d %d", &row, &col);
+
+        if(row < 0 || row >= board -> size || col < 0 || col >= board -> size)
+        {
+            printf("Invalid coordinates! Try again!\n");
+            break;
+        }
+        else{
+            data1 = false;
+        }
+    }
+
+    // Will now set up board and reveal given cell
+    placeMines(board, row, col);
+    calculateNearbyMines(board);
+    
+    // reveal cells
+    
+
+}
+
+bool playTurn(Board *board)
+{
+    int row, col;
+    char action;
+    bool data1 = true;
+    bool data2 = true;
+
+    // ask for col and row until valid
+    while(data1){
+        printf("Enter row and column (row col): ");
+        scanf("%d %d", &row, &col);
+
+        if(row < 0 || row >= board -> size || col < 0 || col >= board -> size)
+        {
+            printf("Invalid coordinates! Try again!\n");
+            break;
+        }
+        else{
+            data1 = false;
+        }
+    }
+
+    // ask for the action until valid
+    while(data2){
+        printf("Enter action (r for reveal, f for flag): ");
+        scanf("%c", &action);
+
+        if(action == 'r' || action == 'f'){
+            data2 = false;
+        }
+        else{
+            printf("Invalid selection. Try again!\n");
+        }
+    }
+
+    // Handle player's action
+
+    // If they chose reveal...
+
+    // If they chose flag...
+
+    // continue game
+}
+
+// Check win function
+// bool checkWin(Board * board){
+
+// }
+
 // Main function to start the game
 int main(void)
 {
     selectDifficulty(); // Prompt user for difficulty and set up the board
+
+    // first play
+
+    // while loop of regualr plays until game over
+    // inside loop check if there was a win
+
+    // free board
     return 0;
 }
