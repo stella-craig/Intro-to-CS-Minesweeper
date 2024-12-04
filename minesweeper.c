@@ -41,8 +41,19 @@ Board selectDifficulty()
             scanf("%d", &size);
 
             float minePercentage;
-            printf("Enter the percentage of mines (as a decimal):\n");
-            scanf("%f", &minePercentage);
+			while(true)
+			{
+				printf("Enter the percentage of mines (as a decimal):\n");
+				scanf("%f", &minePercentage);
+				if(minePercentage < 1 && minePercentage > 0)
+				{
+					break;
+				}
+				else
+				{
+					printf("Invalid value. Must be between 0 and 1. Please try again.\n");
+				}
+			}
 
             mineCount = (int)(size * size * minePercentage);
             break;
@@ -105,6 +116,7 @@ void initializeBoard(Board *board)
 // Function to display the game board in the terminal
 void printBoard(Board *board)
 {
+	printf("\033[2J\033[1;1H");
     printf("    "); // Extra spaces for alignment with column headers
     
     // Print column headers (0, 1, ..., size-1)
@@ -254,7 +266,6 @@ void revealAdjacentCells(Board *board, int row, int col)
 
 void playFirstTurn(Board *board) {
     int row, col;
-    char action;
     bool data1 = true;
 
     // ask for col and row until valid
@@ -310,7 +321,7 @@ bool playTurn(Board *board)
     // ask for the action until valid
     while(data2){
         printf("Enter action (r for reveal, f for flag): ");
-        scanf("%c", &action);
+        scanf(" %c", &action);
 
         if(action == 'r' || action == 'f'){
             data2 = false;
